@@ -4,7 +4,7 @@ let appWidth;
 let appHeight;
 
 function start_app() {
-  
+  sizeCanvas();
   getHex();
 
 }
@@ -19,7 +19,7 @@ function sizeCanvas() {
 function getHex() {
     NOOPBOT_FETCH({
       API: 'hexbot',
-      count: 1
+      count: 100
     }, parseSet);
 }
 
@@ -34,7 +34,6 @@ async function parseHex(hex) {
     let hexI = hex.value.substring(1);
     let decHexI = parseInt(hexI.toString(), 16);
     let text = hex.value + " = " + decHexI;
-    console.log("TCL: parseHex -> text", text)
     
     printConversion(text);
     // reverse base converstion, for testing:
@@ -42,7 +41,10 @@ async function parseHex(hex) {
 }
 
 async function printConversion(str) {
-    debugger
-    console.log("TCL: parseHex -> text", str);
+    console.log("TCL: printConversion -> str", str)
+    let x = NOOPBOT_RANDOM(0, appWidth);
+    let y = NOOPBOT_RANDOM(0, appHeight);
 
+    
+    ctx.strokeText(str, x, y);
 }
