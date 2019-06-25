@@ -19,7 +19,7 @@ function sizeCanvas() {
 function getHex() {
     NOOPBOT_FETCH({
       API: 'hexbot',
-      count: 100
+      count: 1000
     }, parseSet);
 }
 
@@ -27,24 +27,30 @@ function parseSet(responseJson) {
     // console.log("TCL: parseSet -> responseJson", responseJson)
     let { colors } = responseJson;
     // console.log("TCL: parseSet -> colors", colors)
-    colors.forEach( hex => parseHex(hex));
+    colors.forEach( hex => {
+        ctx.fillStyle = hex.value;
+        parseHex(hex, ctx);
+    });
 }
 
-async function parseHex(hex) {
+async function parseHex(hex, ctx) {
     let hexI = hex.value.substring(1);
     let decHexI = parseInt(hexI.toString(), 16);
     let text = hex.value + " = " + decHexI;
+    ctx.fillStyle = hex.value;
     
-    printConversion(text);
+    printConversion(text,ctx);
     // reverse base converstion, for testing:
     // console.log(decHexI + " = " + decHexI.toString(16) );
 }
 
-async function printConversion(str) {
-    console.log("TCL: printConversion -> str", str)
+async function printConversion(str, ctx) {
+
     let x = NOOPBOT_RANDOM(0, appWidth);
     let y = NOOPBOT_RANDOM(0, appHeight);
 
+    await ctx.fillText(str, x, y);
+    console.log("TCL: printConversion -> str", str);
     
-    ctx.strokeText(str, x, y);
+
 }
